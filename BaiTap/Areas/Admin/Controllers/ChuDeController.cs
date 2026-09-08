@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using BaiTap.Models;
 using System.Data.Entity;
 
-namespace BaiTap.Controllers
+namespace BaiTap.Areas.Admin.Controllers
 {
     public class ChuDeController : Controller
     {
@@ -83,10 +83,7 @@ namespace BaiTap.Controllers
             ChuDeViewModel viewModel = new ChuDeViewModel
             {
                 MaCD = chuDe.MaCD,
-                TenChuDe = chuDe.TenChuDe,
-                Email = "", // Email sẽ được lưu riêng nếu có trong database
-                DienThoai = "", // Số điện thoại sẽ được lưu riêng nếu có trong database
-                Diachi = "" // Địa chỉ sẽ được lưu riêng nếu có trong database
+                TenChuDe = chuDe.TenChuDe
             };
 
             return View(viewModel);
