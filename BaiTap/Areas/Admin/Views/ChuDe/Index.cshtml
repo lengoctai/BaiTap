@@ -1,0 +1,303 @@
+@model IEnumerable<BaiTap.Models.CHUDE>
+
+@{
+    ViewBag.Title = "Quản lý chủ đề";
+}
+
+<div class="container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-bookmark-fill text-primary"></i>
+                Quản lý chủ đề
+            </h2>
+            <p class="text-muted mb-0">
+                Quản lý các chủ đề của sách
+            </p>
+        </div>
+
+        <a href="@Url.Action("Create", "CHUDE")"
+           class="btn btn-primary px-4">
+            <i class="bi bi-plus-lg"></i>
+            Thêm chủ đề
+        </a>
+    </div>
+
+
+    <!-- Search -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white">
+                            <i class="bi bi-search"></i>
+                        </span>
+
+                        <input type="text"
+                               id="searchInput"
+                               class="form-control"
+                               placeholder="Tìm kiếm chủ đề..." />
+                    </div>
+                </div>
+
+                <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                    <span class="text-muted">
+                        Tổng số:
+                        <strong>@Model.Count()</strong> chủ đề
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Table -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white border-0 py-3">
+            <h5 class="mb-0 fw-bold">
+                Danh sách chủ đề
+            </h5>
+        </div>
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0"
+                       id="categoryTable">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4" style="width: 100px;">
+                                Mã CD
+                            </th>
+
+                            <th>
+                                Tên chủ đề
+                            </th>
+
+                            <th class="text-center">
+                                Số sách
+                            </th>
+
+                            <th class="text-center" style="width: 220px;">
+                                Thao tác
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <!-- Mã -->
+                                    <td class="ps-4">
+                                        <span class="badge bg-light text-dark border">
+                                            #@item.MaCD
+                                        </span>
+                                    </td>
+
+                                    <!-- Tên chủ đề -->
+                                    <td>
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="category-icon me-3">
+                                                <i class="bi bi-bookmark"></i>
+                                            </div>
+
+                                            <div>
+                                                <div class="fw-semibold category-name">
+                                                    @item.TenChuDe
+                                                </div>
+
+                                                <small class="text-muted">
+                                                    Chủ đề sách
+                                                </small>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                                    <!-- Số sách -->
+                                    <td class="text-center">
+
+                                        <span class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2">
+                                            @(item.SACHes == null ? 0 : item.SACHes.Count)
+                                            sách
+                                        </span>
+
+                                    </td>
+
+                                    <!-- Action -->
+                                    <td class="text-center">
+
+                                        <div class="btn-group">
+
+                                            <a href="@Url.Action("Details", "CHUDE", new { id = item.MaCD })"
+                                               class="btn btn-sm btn-outline-info"
+                                               title="Chi tiết">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+
+                                            <a href="@Url.Action("Edit", "CHUDE", new { id = item.MaCD })"
+                                               class="btn btn-sm btn-outline-warning"
+                                               title="Chỉnh sửa">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+
+                                            <a href="@Url.Action("Delete", "CHUDE", new { id = item.MaCD })"
+                                               class="btn btn-sm btn-outline-danger"
+                                               title="Xóa">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-5">
+
+                                    <div class="empty-state">
+
+                                        <i class="bi bi-bookmark-x display-4 text-muted"></i>
+
+                                        <h5 class="mt-3">
+                                            Chưa có chủ đề
+                                        </h5>
+
+                                        <p class="text-muted">
+                                            Hãy thêm chủ đề đầu tiên.
+                                        </p>
+
+                                        <a href="@Url.Action("Create", "CHUDE")"
+                                           class="btn btn-primary">
+                                            <i class="bi bi-plus-lg"></i>
+                                            Thêm chủ đề
+                                        </a>
+
+                                    </div>
+
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<style>
+
+    body {
+        background-color: #f6f8fb;
+    }
+
+    .card {
+        border-radius: 12px;
+    }
+
+    .category-icon {
+        width: 42px;
+        height: 42px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background-color: #eef4ff;
+        color: #0d6efd;
+
+        font-size: 18px;
+    }
+
+    .table > :not(caption) > * > * {
+        padding: 16px 12px;
+    }
+
+    .table tbody tr {
+        transition: all 0.2s ease;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f8faff;
+    }
+
+    .btn {
+        border-radius: 7px;
+    }
+
+    .empty-state {
+        padding: 30px;
+    }
+
+    .form-control {
+        border-radius: 8px;
+    }
+
+    .input-group-text {
+        border-radius: 8px 0 0 8px;
+    }
+
+</style>
+
+
+<script>
+
+    document.getElementById("searchInput")
+        .addEventListener("keyup", function () {
+
+            var keyword = this.value.toLowerCase();
+
+            var rows = document.querySelectorAll(
+                "#categoryTable tbody tr"
+            );
+
+            rows.forEach(function (row) {
+
+                var name = row
+                    .querySelector(".category-name");
+
+                if (name) {
+
+                    var text = name.textContent
+                        .toLowerCase();
+
+                    if (text.includes(keyword)) {
+                        row.style.display = "";
+                    }
+                    else {
+                        row.style.display = "none";
+                    }
+                }
+
+            });
+
+        });
+
+</script>
+
