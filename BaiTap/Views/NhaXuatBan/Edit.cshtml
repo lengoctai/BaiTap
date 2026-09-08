@@ -1,0 +1,101 @@
+@model BaiTap.Models.NhaXuatBanViewModel
+@{
+    ViewBag.Title = "Chỉnh sửa Nhà Xuất Bản";
+    Layout = "~/Views/Layout/LayoutUser.cshtml";
+}
+
+<!-- Begin Body Wraper Area -->
+<div class="body-wrapper">
+    
+    <!-- Begin FB's Breadcrumb Area -->
+    <div class="breadcrumb-area pt-30">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content">
+                        <ul>
+                            <li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+                            <li><a href="@Url.Action("Index")">Quản lý Nhà Xuất Bản</a></li>
+                            <li class="active">Chỉnh sửa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FB's Breadcrumb Area End Here -->
+    <!-- Begin Page Content Area -->
+    <div class="page-section pt-60 pb-60">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="card">
+                        <div class="card-header bg-warning text-dark">
+                            <h3 class="mb-0"><i class="fa fa-edit"></i> Chỉnh sửa Nhà Xuất Bản</h3>
+                        </div>
+                        <div class="card-body">
+                            @using (Html.BeginForm("Edit", "NhaXuatBan", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => m.MaNXB)
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.TenNXB, new { @class = "control-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(m => m.TenNXB, new { @class = "form-control", placeholder = "Nhập tên nhà xuất bản" })
+                                    @Html.ValidationMessageFor(m => m.TenNXB, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", placeholder = "example@email.com" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.DienThoai, new { @class = "control-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(m => m.DienThoai, new { @class = "form-control", placeholder = "Nhập số điện thoại (10-11 chữ số)" })
+                                    @Html.ValidationMessageFor(m => m.DienThoai, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Diachi, new { @class = "control-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextAreaFor(m => m.Diachi, new { @class = "form-control", rows = "3", placeholder = "Nhập địa chỉ nhà xuất bản" })
+                                    @Html.ValidationMessageFor(m => m.Diachi, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button type="submit" class="btn btn-warning btn-block">
+                                                <i class="fa fa-save"></i> Cập nhật
+                                            </button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a href="@Url.Action("Index")" class="btn btn-secondary btn-block">
+                                                <i class="fa fa-arrow-left"></i> Quay lại
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page Content Area End Here -->
+ 
+</div>
+<!-- Body Wraper Area End Here -->
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

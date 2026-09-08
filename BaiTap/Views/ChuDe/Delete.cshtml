@@ -1,0 +1,98 @@
+@model BaiTap.Models.CHUDE
+@{
+    ViewBag.Title = "Xóa Chủ Đề";
+    Layout = "~/Views/Layout/LayoutUser.cshtml";
+}
+
+<!-- Begin Body Wraper Area -->
+<div class="body-wrapper">
+    @Html.Action("Header_Area", "Home")
+    <!-- Begin FB's Breadcrumb Area -->
+    <div class="breadcrumb-area pt-30">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content">
+                        <ul>
+                            <li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+                            <li><a href="@Url.Action("Index")">Quản lý Chủ Đề</a></li>
+                            <li class="active">Xóa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FB's Breadcrumb Area End Here -->
+    <!-- Begin Page Content Area -->
+    <div class="page-section pt-60 pb-60">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="card border-danger">
+                        <div class="card-header bg-danger text-white">
+                            <h3 class="mb-0"><i class="fa fa-exclamation-triangle"></i> Xác nhận xóa Chủ Đề</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-warning">
+                                <strong>Cảnh báo!</strong> Bạn có chắc chắn muốn xóa chủ đề này không? Hành động này không thể hoàn tác.
+                            </div>
+
+                            <dl class="row">
+                                <dt class="col-sm-4">
+                                    <strong>Mã Chủ Đề:</strong>
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @Model.MaCD
+                                </dd>
+
+                                <dt class="col-sm-4">
+                                    <strong>Tên Chủ Đề:</strong>
+                                </dt>
+                                <dd class="col-sm-8">
+                                    <strong>@Model.TenChuDe</strong>
+                                </dd>
+
+                                <dt class="col-sm-4">
+                                    <strong>Số lượng sách:</strong>
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @(Model.SACHes != null ? Model.SACHes.Count : 0) cuốn sách
+                                    @if (Model.SACHes != null && Model.SACHes.Count > 0)
+                                    {
+                                        <span class="text-danger">(Không thể xóa nếu có sách thuộc chủ đề này)</span>
+                                    }
+                                </dd>
+                            </dl>
+
+                            @using (Html.BeginForm("Delete", "ChuDe", FormMethod.Post, new { @class = "form-horizontal" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => m.MaCD)
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button type="submit" class="btn btn-danger btn-block" onclick="return confirm('Bạn có chắc chắn muốn xóa chủ đề này?');">
+                                                <i class="fa fa-trash"></i> Xác nhận xóa
+                                            </button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a href="@Url.Action("Index")" class="btn btn-secondary btn-block">
+                                                <i class="fa fa-arrow-left"></i> Hủy bỏ
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page Content Area End Here -->
+    @Html.Action("Footer", "Home")
+</div>
+<!-- Body Wraper Area End Here -->
+

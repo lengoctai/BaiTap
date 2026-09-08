@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>@ViewBag.Title - Website Giới Thiệu Sách</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="Website giới thiệu sách - Nền tảng mua sắm và tìm hiểu về sách">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/assets/images/favicon.ico">
+    <!-- CSS
+    ============================================ -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/Content/assets/css/bootstrap.min.css">
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="~/Content/assets/css/font-awesome.min.css">
+    <!-- Ionicons Font CSS -->
+    <link rel="stylesheet" href="~/Content/assets/css/ionicons.min.css">
+    <!-- Plugins CSS -->
+    <link rel="stylesheet" href="~/Content/assets/css/plugins.css">
+    <!-- Helper CSS -->
+    <link rel="stylesheet" href="~/Content/assets/css/helper.css">
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="~/Content/assets/css/style.css">
+    <!-- Modernizer JS -->
+    <script src="~/Content/assets/js/vendor/modernizr-3.11.2.min.js"></script>
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+    <script src="~/Content/assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="~/Content/assets/js/vendor/jquery-migrate-3.3.2.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="~/Content/assets/js/bootstrap.bundle.min.js"></script>
+    <!-- Plugins JS -->
+    <script src="~/Content/assets/js/plugins.js"></script>
+    <!-- Main JS -->
+    <script src="~/Content/assets/js/main.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

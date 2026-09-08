@@ -1,0 +1,115 @@
+﻿@using BaiTap.Models;
+@model List<SACH>
+ <!-- Begin FB's Product Three | Home Three Area -->
+<div class="fb-product_wrap-3">
+    <div class="container">
+        <div class="row">
+            <!-- Begin FB's Single Product Slide Wrap Area -->
+            <div class="col-lg-12">
+                <div class="fb-section_title-2">
+                    <h2>Sản phẩm nổi bật</h2>
+                </div>
+                <div class="fb-single-product-slide_wrap bg-white mb-30">
+                    <div class="fb-product_active-3 owl-carousel">
+                        @foreach(var item in Model.Take(5) )
+                        {
+                        <!-- Begin Sigle Product Area -->
+                        <div class="single-product">
+                            <!-- Begin Product Image Area -->
+                            <div class="product-img">
+                                <a href="single-product.html">
+                                    <img class="primary-img" src="~/Content/assets/images/hinhanhsach/@item.Anhbia" alt="FB'S Prduct">
+                                    <img class="secondary-img" src="~/Content/assets/images/hinhanhsach/@item.Anhbia" alt="FB'S Prduct">
+                                </a>
+                                <div class="sticker"><span>New</span></div>
+                            </div>
+                            <!-- Product Image Area End Here -->
+                            <!-- Begin Product Content Area -->
+                            <div class="product-content">
+                                <h2 class="product-name">
+                                    <a href="single-product-2.html">@item.Tensach</a>
+                                </h2>
+                                <div class="rating-box">
+                                    <ul class="rating">
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li class="no-star"><i class="fa fa-star"></i></li>
+                                    </ul>
+                                </div>
+                                <div class="price-box">
+                                    <span class="new-price">$16.40</span>
+                                    <span class="old-price">$20.50</span>
+                                </div>
+                                <div class="product-action">
+                                    <ul class="product-action-link">
+                                        <li class="shopping-cart_link"><a href="cart.html" title="Shopping Cart"><i class="ion-bag"></i></a></li>
+                                        <li class="quick-view-btn"><a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="ion-eye"></i></a></li>
+                                        <li class="single-product_link"><a href="single-product.html" title="Single Product"><i class="ion-link"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Product Content Area End Here -->
+                        </div>
+                        <!-- Sigle Product Area End Here -->
+                        }
+                       
+                        
+                            @{ int g = 1;}
+                            @foreach (var item in Model.Take(10))
+                            {
+                                if (g == 1 || g == 2 || g == 3 || g == 4 || g == 5)
+                                {
+                                    g++; continue;
+                                }
+
+
+                            <!-- Begin Sigle Product Area -->
+                            <div class="single-product">
+                                <!-- Begin Product Image Area -->
+                                <div class="product-img">
+                                    <a href="single-product.html">
+                                        <img class="primary-img" src="~/Content/assets/images/hinhanhsach/@item.Anhbia" alt="FB'S Prduct">
+                                    </a>
+                                    <div class="sticker"><span>New</span></div>
+                                </div>
+                                <!-- Product Image Area End Here -->
+                                <!-- Begin Product Content Area -->
+                                <div class="product-content">
+                                    <h2 class="product-name">
+                                        <a href="single-product-2.html"> </a>
+                                    </h2>
+                                    <div class="rating-box">
+                                        <ul class="rating">
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li class="no-star"><i class="fa fa-star"></i>@item.Tensach</li>
+                                        </ul>
+                                    </div>
+                                    <div class="price-box">
+                                        <span class="new-price">$16.40</span>
+                                        <span class="old-price">$20.50</span>
+                                    </div>
+                                    <div class="product-action">
+                                        <ul class="product-action-link">
+                                            <li class="shopping-cart_link"><a href="cart.html" title="Shopping Cart"><i class="ion-bag"></i></a></li>
+                                            <li class="quick-view-btn"><a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="ion-eye"></i></a></li>
+                                            <li class="single-product_link"><a href="single-product.html" title="Single Product"><i class="ion-link"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- Product Content Area End Here -->
+                            </div>
+                            <!-- Sigle Product Area End Here -->
+                            }
+                    </div>
+                </div>
+            </div>
+            <!-- Single Product Slide Area End Here -->
+        </div>
+    </div>
+</div>
+<!-- FB's Product Three | Home Three Area End Here -->

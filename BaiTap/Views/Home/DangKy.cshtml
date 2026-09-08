@@ -1,0 +1,162 @@
+@using CaptchaMvc.HtmlHelpers;
+@model BaiTap.Models.DangKyViewModel
+@{
+    ViewBag.Title = "Đăng Ký Tài Khoản";
+    Layout = "~/Views/Layout/LayoutUser.cshtml";
+}
+
+<!-- Begin Body Wraper Area -->
+<div class="body-wrapper">
+    @Html.Action("Header_Area", "Home")
+    <!-- Begin FB's Breadcrumb Area -->
+    <div class="breadcrumb-area pt-30">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content">
+                        <ul>
+                            <li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+                            <li class="active">Đăng Ký</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FB's Breadcrumb Area End Here -->
+    <!-- Begin Login Content Area -->
+    <div class="page-section pt-60 pb-60">
+        <div class="container">
+            <div class="row">
+                <!-- Form đăng ký -->
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0 text-center"><i class="fa fa-user-plus"></i> Đăng Ký Tài Khoản Mới</h3>
+                        </div>
+                        <div class="card-body">
+                            <!-- Hiển thị thông báo thành công -->
+                            @if (TempData["SuccessMessage"] != null)
+                            {
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Thành công!</strong> @TempData["SuccessMessage"]
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            }
+
+                            @using (Html.BeginForm("DangKy", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "registerForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="row">
+                                    <div class="col-md-12 mb-20">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.HoTen, new { @class = "control-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.HoTen, new { @class = "form-control", placeholder = "Nhập họ và tên của bạn" })
+                                            @Html.ValidationMessageFor(m => m.HoTen, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", placeholder = "example@email.com" })
+                                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.DienthoaiKH, new { @class = "control-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.DienthoaiKH, new { @class = "form-control", placeholder = "Nhập số điện thoại (10-11 chữ số)" })
+                                            @Html.ValidationMessageFor(m => m.DienthoaiKH, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mb-20">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.DiachiKH, new { @class = "control-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.TextAreaFor(m => m.DiachiKH, new { @class = "form-control", rows = "2", placeholder = "Nhập địa chỉ của bạn" })
+                                            @Html.ValidationMessageFor(m => m.DiachiKH, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.Taikhoan, new { @class = "control-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.Taikhoan, new { @class = "form-control", placeholder = "Tên đăng nhập (3-50 ký tự)" })
+                                            @Html.ValidationMessageFor(m => m.Taikhoan, "", new { @class = "text-danger" })
+                                            <small class="form-text text-muted">Chỉ được chứa chữ cái, số và dấu gạch dưới</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-20">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.Matkhau, new { @class = "control-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.PasswordFor(m => m.Matkhau, new { @class = "form-control", placeholder = "Mật khẩu (tối thiểu 6 ký tự)" })
+                                            @Html.ValidationMessageFor(m => m.Matkhau, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mb-20">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.XacNhanMatKhau, new { @class = "control-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.PasswordFor(m => m.XacNhanMatKhau, new { @class = "form-control", placeholder = "Nhập lại mật khẩu" })
+                                            @Html.ValidationMessageFor(m => m.XacNhanMatKhau, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        @Html.Captcha(5)
+                                        @Html.ValidationMessage("Captcha", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary btn-block register-button">
+                                                <i class="fa fa-user-plus"></i> Đăng Ký
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 text-center">
+                                        <p class="mt-10">
+                                            Đã có tài khoản?
+                                            <a href="@Url.Action("DangNhap")" class="text-primary">
+                                                <strong>Đăng nhập ngay</strong>
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Login Content Area End Here -->
+    @Html.Action("Footer", "Home")
+</div>
+<!-- Body Wraper Area End Here -->
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            // Tự động đóng thông báo sau 5 giây
+            setTimeout(function () {
+                $('.alert').fadeOut('slow');
+            }, 5000);
+        });
+    </script>
+}
+

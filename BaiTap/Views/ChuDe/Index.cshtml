@@ -1,0 +1,110 @@
+@model IEnumerable<BaiTap.Models.CHUDE>
+@{
+    ViewBag.Title = "Quản lý Chủ Đề";
+    Layout = "~/Views/Layout/LayoutUser.cshtml";
+}
+
+<!-- Begin Body Wraper Area -->
+<div class="body-wrapper">
+    @Html.Action("Header_Area", "Home")
+    <!-- Begin FB's Breadcrumb Area -->
+    <div class="breadcrumb-area pt-30">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content">
+                        <ul>
+                            <li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+                            <li class="active">Quản lý Chủ Đề</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FB's Breadcrumb Area End Here -->
+    <!-- Begin Page Content Area -->
+    <div class="page-section pt-60 pb-60">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="fa fa-tags"></i> Quản lý Chủ Đề</h3>
+                        </div>
+                        <div class="card-body">
+                            <!-- Hiển thị thông báo -->
+                            @if (TempData["SuccessMessage"] != null)
+                            {
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Thành công!</strong> @TempData["SuccessMessage"]
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            }
+                            @if (TempData["ErrorMessage"] != null)
+                            {
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Lỗi!</strong> @TempData["ErrorMessage"]
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            }
+
+                            <div class="mb-3">
+                                <a href="@Url.Action("Create")" class="btn btn-success">
+                                    <i class="fa fa-plus"></i> Thêm Chủ Đề Mới
+                                </a>
+                            </div>
+
+                            @if (Model != null && Model.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Mã Chủ Đề</th>
+                                                <th>Tên Chủ Đề</th>
+                                                <th style="width: 200px;">Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>@item.MaCD</td>
+                                                    <td><strong>@item.TenChuDe</strong></td>
+                                                    <td>
+                                                        <div class="btn-group" role="group">
+                                                            <a href="@Url.Action("Details", new { id = item.MaCD })" class="btn btn-info btn-sm" title="Xem chi tiết">
+                                                                <i class="fa fa-eye"></i>
+                                                            </a>
+                                                            <a href="@Url.Action("Edit", new { id = item.MaCD })" class="btn btn-warning btn-sm" title="Chỉnh sửa">
+                                                                <i class="fa fa-edit"></i>
+                                                            </a>
+                                                            <a href="@Url.Action("Delete", new { id = item.MaCD })" class="btn btn-danger btn-sm" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa chủ đề này?');">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info">
+                                    <i class="fa fa-info-circle"></i> Chưa có dữ liệu chủ đề nào. 
+                                    <a href="@Url.Action("Create")" class="alert-link">Thêm chủ đề đầu tiên</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page Content Area End Here -->
+    @Html.Action("Footer", "Home")
+</div>
+<!-- Body Wraper Area End Here -->

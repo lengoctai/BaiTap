@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a0df088e60824f14b89265ba8869cfb4" Name="Diagram1" ZoomLevel="67">
+        <EntityTypeShape EntityType="ThuVienSachModel.CHITIETDONTHANG" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ThuVienSachModel.CHUDE" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="ThuVienSachModel.DONDATHANG" Width="1.5" PointX="4.75" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ThuVienSachModel.KHACHHANG" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ThuVienSachModel.NHAXUATBAN" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ThuVienSachModel.sysdiagram" Width="1.5" PointX="5.75" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="ThuVienSachModel.TACGIA" Width="1.5" PointX="3" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ThuVienSachModel.VIETSACH" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="ThuVienSachModel.FK__CHITIETDO__MaDon__30F848ED" ManuallyRouted="false" />
+        <AssociationConnector Association="ThuVienSachModel.FK__DONDATHANG__MaKH__2A4B4B5E" ManuallyRouted="false" />
+        <AssociationConnector Association="ThuVienSachModel.FK__VIETSACH__MaTG__2D27B809" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ThuVienSachModel.NhomSach" Width="1.5" PointX="7.75" PointY="11.625" />
+        <EntityTypeShape EntityType="ThuVienSachModel.SACH" Width="1.5" PointX="10" PointY="0.5" />
+        <AssociationConnector Association="ThuVienSachModel.FK__CHITIETDO__Masac__31EC6D26" />
+        <AssociationConnector Association="ThuVienSachModel.FK__SACH__MaCD__267ABA7A" />
+        <AssociationConnector Association="ThuVienSachModel.FK__SACH__MaNXB__276EDEB3" />
+        <AssociationConnector Association="ThuVienSachModel.FK8" />
+        <AssociationConnector Association="ThuVienSachModel.FK__VIETSACH__Masach__2E1BDC42" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

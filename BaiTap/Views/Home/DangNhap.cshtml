@@ -1,0 +1,191 @@
+@model BaiTap.Models.DangNhapViewModel
+@{
+    ViewBag.Title = "Đăng Nhập";
+    Layout = "~/Views/Layout/LayoutUser.cshtml";
+}
+
+<!-- Begin Body Wraper Area -->
+<div class="body-wrapper">
+    @Html.Action("Header_Area", "Home")
+    <!-- Begin FB's Breadcrumb Area -->
+    <div class="breadcrumb-area pt-30">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content">
+                        <ul>
+                            <li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+                            <li class="active">Đăng Nhập / Đăng Ký</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FB's Breadcrumb Area End Here -->
+    <!-- Begin Login Content Area -->
+    <div class="page-section pt-60 pb-60">
+        <div class="container">
+            <div class="row">
+                <!-- Bên trái: Đăng nhập và Quên mật khẩu -->
+                <div class="col-sm-12 col-md-12 col-lg-6 mb-30">
+                    <!-- Form đăng nhập -->
+                    <div class="card mb-30">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0"><i class="fa fa-sign-in"></i> Đăng Nhập</h4>
+                        </div>
+                        <div class="card-body">
+                            <!-- Hiển thị thông báo -->
+                            @if (TempData["SuccessMessage"] != null)
+                            {
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Thành công!</strong> @TempData["SuccessMessage"]
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            }
+                            @if (TempData["InfoMessage"] != null)
+                            {
+                                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                    <strong>Thông tin!</strong> @TempData["InfoMessage"]
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            }
+                            @if (TempData["ErrorMessage"] != null)
+                            {
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Lỗi!</strong> @TempData["ErrorMessage"]
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            }
+
+                            @using (Html.BeginForm("DangNhap", "Home", FormMethod.Post, new { @class = "login-form", role = "form" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="row">
+                                    <div class="col-md-12 col-12 mb-20">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.Taikhoan, new { @class = "control-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.Taikhoan, new { @class = "form-control mb-0", placeholder = "Nhập tài khoản" })
+                                            @Html.ValidationMessageFor(m => m.Taikhoan, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mb-20">
+                                        <div class="form-group">
+                                            @Html.LabelFor(m => m.Matkhau, new { @class = "control-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.PasswordFor(m => m.Matkhau, new { @class = "form-control mb-0", placeholder = "Nhập mật khẩu" })
+                                            @Html.ValidationMessageFor(m => m.Matkhau, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <div class="check-box d-inline-block ml-0 ml-md-2 mt-10">
+                                            @Html.CheckBoxFor(m => m.RememberMe, new { @id = "remember_me" })
+                                            @Html.LabelFor(m => m.RememberMe, "Ghi nhớ đăng nhập", new { @for = "remember_me" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mt-10 mb-20 text-left text-md-right">
+                                        <a href="#quen-mat-khau" data-bs-toggle="collapse" data-bs-target="#quen-mat-khau" aria-expanded="false" aria-controls="quen-mat-khau">Quên mật khẩu?</a>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-primary register-button mt-0 w-100">
+                                            <i class="fa fa-sign-in"></i> Đăng Nhập
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+
+                            <!-- Form Quên mật khẩu (Collapse) -->
+                            <div class="collapse mt-20" id="quen-mat-khau">
+                                <div class="card card-body bg-light">
+                                    <h5 class="mb-3"><i class="fa fa-key"></i> Quên Mật Khẩu</h5>
+                                    @{
+                                        var quenMatKhauModel = new BaiTap.Models.QuenMatKhauViewModel();
+                                    }
+                                    @using (Html.BeginForm("QuenMatKhau", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        
+                                        <div class="form-group">
+                                            @Html.Label("Email", "Nhập email của bạn", new { @class = "control-label" })
+                                            <span class="text-danger">*</span>
+                                            @Html.TextBox("Email", "", new { @class = "form-control", type = "email", placeholder = "example@email.com", required = "required" })
+                                            @Html.ValidationMessage("Email", "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-warning btn-block">
+                                                <i class="fa fa-paper-plane"></i> Gửi Mật Khẩu
+                                            </button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bên phải: Đăng ký -->
+                <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h4 class="mb-0"><i class="fa fa-user-plus"></i> Đăng Ký Tài Khoản Mới</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-20">Chưa có tài khoản? Đăng ký ngay để trải nghiệm đầy đủ các tính năng của website!</p>
+                            
+                            <div class="row">
+                                <div class="col-md-12 mb-20">
+                                    <a href="@Url.Action("DangKy")" class="btn btn-success btn-block register-button">
+                                        <i class="fa fa-user-plus"></i> Đăng Ký Ngay
+                                    </a>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <h5 class="mb-15">Lợi ích khi đăng ký:</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-10"><i class="fa fa-check-circle text-success"></i> Mua sắm nhanh chóng và tiện lợi</li>
+                                <li class="mb-10"><i class="fa fa-check-circle text-success"></i> Theo dõi đơn hàng dễ dàng</li>
+                                <li class="mb-10"><i class="fa fa-check-circle text-success"></i> Nhận thông báo về sách mới</li>
+                                <li class="mb-10"><i class="fa fa-check-circle text-success"></i> Tích lũy điểm thưởng</li>
+                                <li class="mb-10"><i class="fa fa-check-circle text-success"></i> Tham gia các chương trình khuyến mãi</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Login Content Area End Here -->
+    @Html.Action("Footer", "Home")
+</div>
+<!-- Body Wraper Area End Here -->
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            // Tự động đóng thông báo sau 5 giây
+            setTimeout(function () {
+                $('.alert').fadeOut('slow');
+            }, 5000);
+
+            // Xử lý collapse quên mật khẩu
+            $('#quen-mat-khau').on('show.bs.collapse', function () {
+                $('html, body').animate({
+                    scrollTop: $("#quen-mat-khau").offset().top - 100
+                }, 500);
+            });
+        });
+    </script>
+}
+
