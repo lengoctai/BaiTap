@@ -1,0 +1,301 @@
+@using BaiTap.Models
+@model CheckoutViewModel
+@{
+    ViewBag.Title = "Thanh Toán";
+    Layout = "~/Views/Layout/LayoutUser.cshtml";
+}
+
+<div class="body-wrapper">
+    @Html.Action("Header_Area", "Home")
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-area pt-30 pb-30">
+        <div class="container">
+            <div class="breadcrumb-content">
+                <ul>
+                    <li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+                    <li><a href="@Url.Action("Index","GioHang")">Giỏ hàng</a></li>
+                    <li class="active">Thanh toán</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Content -->
+    <div class="checkout-main-area pt-30 pb-60">
+        <div class="container">
+
+            <!-- Validation summary -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-circle-fill me-2"></i>
+                    <strong>Vui lòng kiểm tra lại thông tin:</strong>
+                    @Html.ValidationSummary(false, "", new { @class = "mb-0 mt-2" })
+                </div>
+            }
+
+            @using (Html.BeginForm("ThanhToan", "GioHang", FormMethod.Post,
+                new { id = "checkout-form", novalidate = "novalidate" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+
+                    <!-- ═══════════════════════════════════════════
+                         CỘT TRÁI: Thông tin giao hàng + PTTT
+                    ═══════════════════════════════════════════ -->
+                    <div class="col-lg-7">
+
+                        <!-- Thông tin giao hàng -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-dark text-white">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-truck me-2"></i>Thông tin giao hàng
+                                </h5>
+                            </div>
+                            <div class="card-body">
+
+                                <!-- Họ tên người nhận -->
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.HoTenNguoiNhan,
+                                        new { @class = "form-label fw-semibold" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(m => m.HoTenNguoiNhan,
+                                        new { @class = "form-control",
+                                              placeholder = "VD: Nguyễn Văn An" })
+                                    @Html.ValidationMessageFor(m => m.HoTenNguoiNhan,
+                                        "", new { @class = "text-danger small" })
+                                </div>
+
+                                <!-- Địa chỉ giao hàng -->
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.DiaChiGiaoHang,
+                                        new { @class = "form-label fw-semibold" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(m => m.DiaChiGiaoHang,
+                                        new { @class = "form-control",
+                                              placeholder = "Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố" })
+                                    @Html.ValidationMessageFor(m => m.DiaChiGiaoHang,
+                                        "", new { @class = "text-danger small" })
+                                </div>
+
+                                <!-- Số điện thoại -->
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.SoDienThoai,
+                                        new { @class = "form-label fw-semibold" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(m => m.SoDienThoai,
+                                        new { @class = "form-control",
+                                              placeholder = "VD: 0901234567",
+                                              type = "tel" })
+                                    @Html.ValidationMessageFor(m => m.SoDienThoai,
+                                        "", new { @class = "text-danger small" })
+                                </div>
+
+                                <!-- Ghi chú -->
+                                <div class="mb-3">
+                                    @Html.LabelFor(m => m.GhiChu,
+                                        new { @class = "form-label fw-semibold" })
+                                    @Html.TextAreaFor(m => m.GhiChu,
+                                        new { @class = "form-control",
+                                              rows = "3",
+                                              placeholder = "Ghi chú thêm cho đơn hàng (không bắt buộc)..." })
+                                    @Html.ValidationMessageFor(m => m.GhiChu,
+                                        "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Phương thức thanh toán -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-dark text-white">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-credit-card me-2"></i>Phương thức thanh toán
+                                </h5>
+                            </div>
+                            <div class="card-body">
+
+                                @Html.ValidationMessageFor(m => m.PhuongThucThanhToan,
+                                    "", new { @class = "text-danger small d-block mb-2" })
+
+                                <!-- COD -->
+                                <div class="payment-option border rounded p-3 mb-3 @(Model.PhuongThucThanhToan == "CashOnDelivery" ? "border-primary bg-light" : "")">
+                                    <div class="form-check">
+                                        @Html.RadioButtonFor(m => m.PhuongThucThanhToan,
+                                            "CashOnDelivery",
+                                            new { @class = "form-check-input", id = "pttt-cod",
+                                                  @checked = (Model.PhuongThucThanhToan == null ||
+                                                              Model.PhuongThucThanhToan == "CashOnDelivery") })
+                                        <label class="form-check-label fw-semibold" for="pttt-cod">
+                                            <i class="bi bi-cash-coin text-success me-2"></i>
+                                            Thanh toán khi nhận hàng (COD)
+                                        </label>
+                                        <p class="text-muted small mb-0 mt-1">
+                                            Bạn sẽ thanh toán bằng tiền mặt khi nhận được hàng.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Chuyển khoản -->
+                                <div class="payment-option border rounded p-3 mb-3 @(Model.PhuongThucThanhToan == "BankTransfer" ? "border-primary bg-light" : "")">
+                                    <div class="form-check">
+                                        @Html.RadioButtonFor(m => m.PhuongThucThanhToan,
+                                            "BankTransfer",
+                                            new { @class = "form-check-input", id = "pttt-bank" })
+                                        <label class="form-check-label fw-semibold" for="pttt-bank">
+                                            <i class="bi bi-bank text-primary me-2"></i>
+                                            Chuyển khoản ngân hàng
+                                        </label>
+                                        <div id="bank-info" class="mt-2 ps-3 @(Model.PhuongThucThanhToan == "BankTransfer" ? "" : "d-none")">
+                                            <div class="alert alert-info mb-0 py-2">
+                                                <small>
+                                                    <strong>Ngân hàng:</strong> Vietcombank<br>
+                                                    <strong>Số TK:</strong> 1234567890<br>
+                                                    <strong>Chủ TK:</strong> NGUYEN VAN A<br>
+                                                    <strong>Nội dung:</strong> [Họ tên] - [SĐT]
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Ví điện tử -->
+                                <div class="payment-option border rounded p-3 @(Model.PhuongThucThanhToan == "EWallet" ? "border-primary bg-light" : "")">
+                                    <div class="form-check">
+                                        @Html.RadioButtonFor(m => m.PhuongThucThanhToan,
+                                            "EWallet",
+                                            new { @class = "form-check-input", id = "pttt-ewallet" })
+                                        <label class="form-check-label fw-semibold" for="pttt-ewallet">
+                                            <i class="bi bi-phone text-warning me-2"></i>
+                                            Ví điện tử (MoMo / ZaloPay)
+                                        </label>
+                                        <p class="text-muted small mb-0 mt-1">
+                                            Thanh toán qua ví điện tử. Bạn sẽ được chuyển đến trang thanh toán sau khi đặt hàng.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- /col-lg-7 -->
+
+                    <!-- ═══════════════════════════════════════════
+                         CỘT PHẢI: Tóm tắt đơn hàng
+                    ═══════════════════════════════════════════ -->
+                    <div class="col-lg-5">
+                        <div class="card shadow-sm mb-4 sticky-top" style="top: 20px;">
+                            <div class="card-header bg-dark text-white">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-bag-check me-2"></i>Đơn hàng của bạn
+                                </h5>
+                            </div>
+                            <div class="card-body p-0">
+
+                                <!-- Danh sách sản phẩm -->
+                                <div class="order-items p-3" style="max-height:380px; overflow-y:auto;">
+                                    @foreach (var item in Model.Items)
+                                    {
+                                        <div class="d-flex align-items-start border-bottom pb-3 mb-3">
+                                            <img src="~/content/assets/images/hinhanhsach/@item.AnhBia"
+                                                 alt="@item.TenSach"
+                                                 style="width:55px; height:72px; object-fit:cover; border-radius:4px; flex-shrink:0;"
+                                                 onerror="this.src='/content/assets/images/no-image.png'">
+                                            <div class="ms-3 flex-grow-1">
+                                                <div class="fw-semibold" style="font-size:.9rem;">@item.TenSach</div>
+                                                <div class="text-muted small">
+                                                    @item.DonGia.ToString("N0") ₫ × @item.SoLuong
+                                                </div>
+                                            </div>
+                                            <div class="text-danger fw-bold ms-2 text-nowrap">
+                                                @item.ThanhTien.ToString("N0") ₫
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                <!-- Tổng tiền -->
+                                <div class="p-3">
+                                    <table class="table table-borderless mb-0">
+                                        <tr>
+                                            <td class="text-muted">Tạm tính (@Model.Items.Count sản phẩm):</td>
+                                            <td class="text-end fw-bold">@Model.TongTien.ToString("N0") ₫</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-muted">Phí vận chuyển:</td>
+                                            <td class="text-end text-success fw-bold">Miễn phí</td>
+                                        </tr>
+                                        <tr class="border-top">
+                                            <td class="fw-bold fs-6 pt-3">Tổng thanh toán:</td>
+                                            <td class="text-end fw-bold fs-5 text-danger pt-3">
+                                                @Model.TongTien.ToString("N0") ₫
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white p-3">
+                                <!-- Nút xác nhận -->
+                                <button type="submit" id="btn-dat-hang"
+                                        class="btn btn-danger w-100 py-3 fw-bold fs-5">
+                                    <i class="bi bi-bag-check-fill me-2"></i>Đặt hàng ngay
+                                </button>
+                                <a href="@Url.Action("Index","GioHang")"
+                                   class="btn btn-outline-secondary w-100 mt-2">
+                                    <i class="bi bi-arrow-left me-1"></i>Quay lại giỏ hàng
+                                </a>
+
+                                <!-- Bảo mật -->
+                                <div class="text-center mt-3 text-muted small">
+                                    <i class="bi bi-shield-check text-success me-1"></i>
+                                    Thông tin của bạn được bảo mật 100%
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /col-lg-5 -->
+
+                </div><!-- /row -->
+            }
+        </div>
+    </div>
+
+    @Html.Action("Footer", "Home")
+</div>
+
+@section Scripts {
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    // Hiển thị / ẩn thông tin ngân hàng khi chọn PTTT
+    $('input[name="PhuongThucThanhToan"]').on('change', function () {
+        var selected = $(this).val();
+
+        // Reset highlight
+        $('.payment-option').removeClass('border-primary bg-light');
+        $(this).closest('.payment-option').addClass('border-primary bg-light');
+
+        // Hiện thông tin ngân hàng nếu cần
+        if (selected === 'BankTransfer') {
+            $('#bank-info').removeClass('d-none');
+        } else {
+            $('#bank-info').addClass('d-none');
+        }
+    });
+
+    // Trigger on load để áp highlight đúng radio đang check
+    $('input[name="PhuongThucThanhToan"]:checked').trigger('change');
+
+    // Confirm trước khi submit
+    $('#checkout-form').on('submit', function (e) {
+        var pttt = $('input[name="PhuongThucThanhToan"]:checked').val();
+        if (!pttt) {
+            e.preventDefault();
+            alert('Vui lòng chọn phương thức thanh toán.');
+            return;
+        }
+
+        var btn = $('#btn-dat-hang');
+        btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Đang xử lý...');
+    });
+</script>
+}

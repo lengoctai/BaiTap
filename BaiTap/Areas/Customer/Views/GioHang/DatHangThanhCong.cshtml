@@ -1,0 +1,230 @@
+@using BaiTap.Models
+@model DatHangThanhCongViewModel
+@{
+    ViewBag.Title = "Đặt Hàng Thành Công";
+    Layout = "~/Views/Layout/LayoutUser.cshtml";
+
+    var tenPTTT = Model.PhuongThucThanhToan == "CashOnDelivery" ? "Thanh toán khi nhận hàng (COD)"
+                : Model.PhuongThucThanhToan == "BankTransfer"   ? "Chuyển khoản ngân hàng"
+                : "Ví điện tử (MoMo / ZaloPay)";
+
+    var iconPTTT = Model.PhuongThucThanhToan == "CashOnDelivery" ? "bi-cash-coin text-success"
+                 : Model.PhuongThucThanhToan == "BankTransfer"   ? "bi-bank text-primary"
+                 : "bi-phone text-warning";
+}
+
+<div class="body-wrapper">
+    @Html.Action("Header_Area", "Home")
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-area pt-30 pb-30">
+        <div class="container">
+            <div class="breadcrumb-content">
+                <ul>
+                    <li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+                    <li class="active">Đặt hàng thành công</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Content -->
+    <div class="order-success-area pt-30 pb-60">
+        <div class="container">
+
+            <!-- Banner thành công -->
+            <div class="text-center py-40 mb-30"
+                 style="background: linear-gradient(135deg,#d4edda 0%,#c3e6cb 100%);
+                        border-radius: 12px; border: 2px solid #b1dfbb;">
+                <div style="font-size:5rem; line-height:1;" class="mb-3">🎉</div>
+                <h2 class="text-success mb-2">Đặt hàng thành công!</h2>
+                <p class="text-muted mb-1 fs-6">
+                    Cảm ơn bạn đã mua sắm tại <strong>Thư Viện Sách</strong>.
+                </p>
+                <p class="text-muted mb-0">
+                    Mã đơn hàng của bạn:
+                    <span class="badge bg-success fs-6 px-3 py-2">#@Model.MaDonHang</span>
+                </p>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+
+                    <!-- Thông tin đơn hàng -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-info-circle me-2"></i>Thông tin đơn hàng
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <dl>
+                                        <dt class="text-muted small mb-1">Mã đơn hàng</dt>
+                                        <dd class="fw-bold fs-5 text-success">#@Model.MaDonHang</dd>
+
+                                        <dt class="text-muted small mb-1">Ngày đặt</dt>
+                                        <dd>@Model.NgayDat.ToString("HH:mm - dd/MM/yyyy")</dd>
+
+                                        <dt class="text-muted small mb-1">Phương thức thanh toán</dt>
+                                        <dd>
+                                            <i class="bi @iconPTTT me-1"></i>@tenPTTT
+                                        </dd>
+                                    </dl>
+                                </div>
+                                <div class="col-sm-6">
+                                    <dl>
+                                        <dt class="text-muted small mb-1">
+                                            <i class="bi bi-person me-1"></i>Người nhận
+                                        </dt>
+                                        <dd class="fw-semibold">@Model.HoTenNguoiNhan</dd>
+
+                                        <dt class="text-muted small mb-1">
+                                            <i class="bi bi-telephone me-1"></i>Số điện thoại
+                                        </dt>
+                                        <dd>@Model.SoDienThoai</dd>
+
+                                        <dt class="text-muted small mb-1">
+                                            <i class="bi bi-geo-alt me-1"></i>Địa chỉ giao hàng
+                                        </dt>
+                                        <dd>@Model.DiaChiGiaoHang</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chi tiết sản phẩm đã đặt -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-bag me-2"></i>Sản phẩm đã đặt
+                            </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width:70px;"></th>
+                                            <th>Tên sách</th>
+                                            <th class="text-center" style="width:80px;">SL</th>
+                                            <th class="text-end" style="width:130px;">Đơn giá</th>
+                                            <th class="text-end" style="width:140px;">Thành tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Items)
+                                        {
+                                            <tr>
+                                                <td class="py-3">
+                                                    <img src="~/content/assets/images/hinhanhsach/@item.AnhBia"
+                                                         alt="@item.TenSach"
+                                                         style="width:50px; height:65px; object-fit:cover; border-radius:4px;"
+                                                         onerror="this.src='/content/assets/images/no-image.png'">
+                                                </td>
+                                                <td class="align-middle fw-semibold">@item.TenSach</td>
+                                                <td class="align-middle text-center">@item.SoLuong</td>
+                                                <td class="align-middle text-end">@item.DonGia.ToString("N0") ₫</td>
+                                                <td class="align-middle text-end text-danger fw-bold">
+                                                    @item.ThanhTien.ToString("N0") ₫
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot class="table-light">
+                                        <tr>
+                                            <td colspan="3"></td>
+                                            <td class="text-end fw-semibold">Tạm tính:</td>
+                                            <td class="text-end fw-bold">@Model.TongTien.ToString("N0") ₫</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3"></td>
+                                            <td class="text-end fw-semibold">Phí vận chuyển:</td>
+                                            <td class="text-end text-success fw-bold">Miễn phí</td>
+                                        </tr>
+                                        <tr class="table-success">
+                                            <td colspan="3"></td>
+                                            <td class="text-end fw-bold fs-6">Tổng cộng:</td>
+                                            <td class="text-end fw-bold fs-5 text-danger">
+                                                @Model.TongTien.ToString("N0") ₫
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model.PhuongThucThanhToan == "CashOnDelivery")
+                    {
+                        <!-- Hướng dẫn COD -->
+                        <div class="alert alert-info">
+                            <h6><i class="bi bi-info-circle-fill me-2"></i>Hướng dẫn thanh toán</h6>
+                            <p class="mb-0">
+                                Bạn đã chọn thanh toán khi nhận hàng. Vui lòng chuẩn bị
+                                <strong>@Model.TongTien.ToString("N0") ₫</strong>
+                                để thanh toán cho nhân viên giao hàng.
+                            </p>
+                        </div>
+                    }
+                    else if (Model.PhuongThucThanhToan == "BankTransfer")
+                    {
+                        <!-- Thông tin chuyển khoản -->
+                        <div class="alert alert-primary">
+                            <h6><i class="bi bi-bank me-2"></i>Thông tin chuyển khoản</h6>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <ul class="list-unstyled mb-0">
+                                        <li><strong>Ngân hàng:</strong> Vietcombank</li>
+                                        <li><strong>Số tài khoản:</strong> 1234567890</li>
+                                        <li><strong>Chủ tài khoản:</strong> NGUYEN VAN A</li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-6">
+                                    <ul class="list-unstyled mb-0">
+                                        <li>
+                                            <strong>Số tiền:</strong>
+                                            <span class="text-danger fw-bold">@Model.TongTien.ToString("N0") ₫</span>
+                                        </li>
+                                        <li>
+                                            <strong>Nội dung:</strong>
+                                            @Model.HoTenNguoiNhan - @Model.SoDienThoai - #@Model.MaDonHang
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Ví điện tử -->
+                        <div class="alert alert-warning">
+                            <h6><i class="bi bi-phone me-2"></i>Thanh toán ví điện tử</h6>
+                            <p class="mb-0">
+                                Đơn hàng của bạn đã được ghi nhận. Chúng tôi sẽ liên hệ để hỗ trợ
+                                thanh toán qua ví điện tử.
+                            </p>
+                        </div>
+                    }
+
+                    <!-- Nút điều hướng -->
+                    <div class="d-flex gap-3 mt-20">
+                        <a href="@Url.Action("Index","Home")"
+                           class="btn btn-outline-secondary flex-fill">
+                            <i class="bi bi-house me-1"></i>Về trang chủ
+                        </a>
+                        <a href="@Url.Action("Index","Home")"
+                           class="btn btn-danger flex-fill">
+                            <i class="bi bi-cart-plus me-1"></i>Tiếp tục mua sắm
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Html.Action("Footer", "Home")
+</div>

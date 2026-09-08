@@ -125,7 +125,7 @@
                                         </ul>
                                     </div>
                                     <div class="price-box pb-10">
-                                        <span class="new-price">@Model.Giaban</span>
+                                        <span class="new-price">@((Model.Giaban ?? 0).ToString("N0")) ₫</span>
                                     </div>
                                     <div class="product-desc">
                                         <p>
@@ -135,62 +135,56 @@
                                             </span>
                                         </p>
                                     </div>
-                                    <div class="choose-group-product">
-                                        <div class="cart-table table-responsive">
-                                            <table class="table table-bordered">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="product-quantity">
-                                                            <div class="quantity">
-                                                                <label>Quantity</label>
-                                                                <div class="cart-plus-minus">
-                                                                    <input class="cart-plus-minus-box" value="1"
-                                                                           type="text">
-                                                                    <div class="dec qtybutton">
-                                                                        <i class="fa fa-angle-down"></i>
-                                                                    </div>
-                                                                    <div class="inc qtybutton">
-                                                                        <i class="fa fa-angle-up"></i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="pro-title">
-                                                            <a href="single-product.html">CROWN SUMMIT BACKPACK</a>
-                                                        </td>
-                                                        <td class="pro-price"><span>$295.00</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="product-quantity">
-                                                            <div class="quantity">
-                                                                <label>Quantity</label>
-                                                                <div class="cart-plus-minus">
-                                                                    <input class="cart-plus-minus-box" value="1"
-                                                                           type="text">
-                                                                    <div class="dec qtybutton">
-                                                                        <i class="fa fa-angle-down"></i>
-                                                                    </div>
-                                                                    <div class="inc qtybutton">
-                                                                        <i class="fa fa-angle-up"></i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="pro-title">
-                                                            <a href="single-product.html">Vestibulum suscipit</a>
-                                                        </td>
-                                                        <td class="pro-price"><span>$125.00</span></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                    <div class="choose-group-product" style="display:none;">
+                                        <!-- Bảng demo cũ - đã ẩn -->
+                                    </div>
+                                    <div class="single-add-to-cart mt-20">
+                                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                                            <!-- Số lượng -->
+                                            <div class="input-group" style="width:130px;">
+                                                <button class="btn btn-outline-secondary" type="button" id="btn-giam-sl">−</button>
+                                                <input type="number" class="form-control text-center" id="soLuongInput"
+                                                       value="1" min="1" max="@(Model.Soluongton ?? 1)">
+                                                <button class="btn btn-outline-secondary" type="button" id="btn-tang-sl">+</button>
+                                            </div>
+                                            <!-- Nút thêm vào giỏ -->
+                                            @if ((Model.Soluongton ?? 0) > 0)
+                                            {
+                                                <button type="button" id="btn-them-gio"
+                                                        class="fb-btn add-to-cart"
+                                                        data-masach="@Model.Masach"
+                                                        style="padding: 10px 24px; font-size: 1rem;">
+                                                    <i class="bi bi-cart-plus me-2"></i>Thêm vào giỏ hàng
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" class="fb-btn" disabled
+                                                        style="background:#ccc; cursor:not-allowed; padding:10px 24px;">
+                                                    Hết hàng
+                                                </button>
+                                            }
                                         </div>
+
+                                        <!-- Thông báo AJAX -->
+                                        <div id="them-gio-alert" class="mt-2" style="display:none;"></div>
                                     </div>
-                                    <div class="single-add-to-cart">
-                                        <form action="#" class="cart-quantity mt-0">
-                                            <a href="cart.html" class="fb-btn add-to-cart">Add to cart</a>
-                                        </form>
-                                    </div>
-                                    <span class="product-availability pt-25">In stock</span>
+                                    <span class="product-availability pt-25">
+                                        @if ((Model.Soluongton ?? 0) > 0)
+                                        {
+                                            <span class="text-success">
+                                                <i class="bi bi-check-circle-fill me-1"></i>
+                                                Còn hàng (@Model.Soluongton quyển)
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-danger">
+                                                <i class="bi bi-x-circle-fill me-1"></i>
+                                                Tạm hết hàng
+                                            </span>
+                                        }
+                                    </span>
                                     <div class="footer-widget-social-link footer-widget-social-link-2">
                                         <span>Share</span>
                                         <ul class="social-link">
@@ -878,3 +872,62 @@
     @Html.Action("Quick_View", "Home")
 </div>
 <!-- Body Wraper Area End Here -->
+
+@section Scripts {
+<script>
+    // Tăng / giảm số lượng
+    $('#btn-tang-sl').on('click', function () {
+        var input = $('#soLuongInput');
+        var max = parseInt(input.attr('max')) || 99;
+        var val = parseInt(input.val()) || 1;
+        if (val < max) input.val(val + 1);
+    });
+    $('#btn-giam-sl').on('click', function () {
+        var input = $('#soLuongInput');
+        var val = parseInt(input.val()) || 1;
+        if (val > 1) input.val(val - 1);
+    });
+
+    // Thêm vào giỏ hàng qua AJAX
+    $('#btn-them-gio').on('click', function () {
+        var maSach = $(this).data('masach');
+        var soLuong = parseInt($('#soLuongInput').val()) || 1;
+
+        $.ajax({
+            url: '@Url.Action("ThemVaoGio","GioHang")',
+            type: 'POST',
+            data: {
+                maSach: maSach,
+                soLuong: soLuong,
+                __RequestVerificationToken: $('[name=__RequestVerificationToken]').val()
+            },
+            success: function (res) {
+                var alertDiv = $('#them-gio-alert');
+                if (res.success) {
+                    alertDiv.html(
+                        '<div class="alert alert-success py-2 mb-0">' +
+                        '<i class="bi bi-check-circle-fill me-2"></i>' + res.message + ' ' +
+                        '<a href="@Url.Action("Index","GioHang")" class="alert-link">Xem giỏ hàng</a>' +
+                        '</div>'
+                    ).show();
+                    // Cập nhật số lượng icon giỏ hàng trên header
+                    $('#cart-icon-count').text(res.soLuongGioHang);
+                } else {
+                    alertDiv.html(
+                        '<div class="alert alert-warning py-2 mb-0">' +
+                        '<i class="bi bi-exclamation-triangle me-2"></i>' + res.message +
+                        '</div>'
+                    ).show();
+                }
+                setTimeout(function () { alertDiv.fadeOut(); }, 4000);
+            },
+            error: function () {
+                $('#them-gio-alert').html(
+                    '<div class="alert alert-danger py-2 mb-0">Lỗi kết nối. Vui lòng thử lại.</div>'
+                ).show();
+            }
+        });
+    });
+</script>
+@Html.AntiForgeryToken()
+}

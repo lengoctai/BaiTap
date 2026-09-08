@@ -1,0 +1,251 @@
+@using BaiTap.Models
+@model CartViewModel
+@{
+    ViewBag.Title = "Giỏ Hàng";
+    Layout = "~/Views/Layout/LayoutUser.cshtml";
+}
+
+<div class="body-wrapper">
+    @Html.Action("Header_Area", "Home")
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-area pt-30 pb-30">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content">
+                        <ul>
+                            <li><a href="@Url.Action("Index","Home")">Trang chủ</a></li>
+                            <li class="active">Giỏ Hàng</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Content -->
+    <div class="cart-main-area pt-30 pb-60">
+        <div class="container">
+
+            @if (TempData["WarningMessage"] != null)
+            {
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["WarningMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>@TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @if (Model.Items == null || !Model.Items.Any())
+            {
+                <div class="text-center py-60">
+                    <i class="bi bi-cart-x" style="font-size:5rem; color:#ccc;"></i>
+                    <h3 class="mt-20 mb-10">Giỏ hàng của bạn đang trống</h3>
+                    <p class="text-muted mb-30">Hãy thêm sách vào giỏ hàng để tiếp tục mua sắm.</p>
+                    <a href="@Url.Action("Index","Home")" class="fb-btn">Tiếp tục mua sắm</a>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <!-- Bảng giỏ hàng -->
+                    <div class="col-lg-9">
+                        <div class="table-content table-responsive">
+                            <table class="table table-hover" id="cart-table">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th style="width:100px;">Ảnh bìa</th>
+                                        <th>Tên sách</th>
+                                        <th style="width:130px;">Đơn giá</th>
+                                        <th style="width:150px;">Số lượng</th>
+                                        <th style="width:150px;">Thành tiền</th>
+                                        <th style="width:70px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Items)
+                                    {
+                                        <tr id="row-@item.MaSach">
+                                            <td>
+                                                <img src="~/content/assets/images/hinhanhsach/@item.AnhBia"
+                                                     alt="@item.TenSach"
+                                                     style="width:70px; height:90px; object-fit:cover; border-radius:4px;"
+                                                     onerror="this.src='/content/assets/images/no-image.png'">
+                                            </td>
+                                            <td class="align-middle">
+                                                <strong>@item.TenSach</strong>
+                                            </td>
+                                            <td class="align-middle text-danger fw-bold">
+                                                @item.DonGia.ToString("N0") ₫
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="input-group" style="max-width:120px;">
+                                                    <button class="btn btn-outline-secondary btn-sm btn-giam"
+                                                            type="button" data-masach="@item.MaSach">−</button>
+                                                    <input type="number"
+                                                           class="form-control form-control-sm text-center qty-input"
+                                                           value="@item.SoLuong"
+                                                           min="1"
+                                                           data-masach="@item.MaSach"
+                                                           style="width:50px;">
+                                                    <button class="btn btn-outline-secondary btn-sm btn-tang"
+                                                            type="button" data-masach="@item.MaSach">+</button>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle text-danger fw-bold thanh-tien"
+                                                id="thanh-tien-@item.MaSach">
+                                                @item.ThanhTien.ToString("N0") ₫
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <button class="btn btn-outline-danger btn-sm btn-xoa"
+                                                        title="Xóa"
+                                                        data-masach="@item.MaSach">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-20">
+                            <a href="@Url.Action("Index","Home")" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-1"></i> Tiếp tục mua sắm
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Tóm tắt đơn hàng -->
+                    <div class="col-lg-3">
+                        <div class="cart-summary card shadow-sm">
+                            <div class="card-header bg-dark text-white">
+                                <h5 class="mb-0"><i class="bi bi-receipt me-2"></i>Tóm tắt đơn hàng</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-borderless mb-0">
+                                    <tr>
+                                        <td>Số sản phẩm:</td>
+                                        <td class="text-end fw-bold" id="tong-so-luong">@Model.TongSoLuong</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tạm tính:</td>
+                                        <td class="text-end fw-bold text-danger" id="tong-tien">
+                                            @Model.TongTien.ToString("N0") ₫
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phí vận chuyển:</td>
+                                        <td class="text-end text-success">Miễn phí</td>
+                                    </tr>
+                                    <tr class="border-top">
+                                        <td class="fw-bold fs-6">Tổng cộng:</td>
+                                        <td class="text-end fw-bold fs-5 text-danger" id="tong-tien-final">
+                                            @Model.TongTien.ToString("N0") ₫
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="card-footer bg-white">
+                                <a href="@Url.Action("ThanhToan","GioHang")"
+                                   class="btn btn-danger w-100 py-2 fs-6">
+                                    <i class="bi bi-credit-card me-2"></i>Tiến hành thanh toán
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @Html.Action("Footer", "Home")
+</div>
+
+@section Scripts {
+<script>
+    var capNhatUrl = '@Url.Action("CapNhatSoLuong","GioHang")';
+    var xoaUrl = '@Url.Action("XoaKhoiGio","GioHang")';
+    var token = '@Html.AntiForgeryToken()';
+
+    function capNhatGioHang(maSach, soLuong) {
+        $.ajax({
+            url: capNhatUrl,
+            type: 'POST',
+            data: { maSach: maSach, soLuong: soLuong, __RequestVerificationToken: $('[name=__RequestVerificationToken]').val() },
+            success: function (res) {
+                if (res.success) {
+                    if (soLuong <= 0) {
+                        $('#row-' + maSach).remove();
+                        if ($('#cart-table tbody tr').length === 0) {
+                            location.reload();
+                        }
+                    } else {
+                        $('#thanh-tien-' + maSach).text(res.thanhTienItem + ' ₫');
+                    }
+                    $('#tong-tien, #tong-tien-final').text(res.tongTien + ' ₫');
+                    $('#cart-icon-count').text(res.soLuongGioHang);
+                } else {
+                    alert(res.message);
+                }
+            }
+        });
+    }
+
+    // Nút tăng số lượng
+    $(document).on('click', '.btn-tang', function () {
+        var maSach = $(this).data('masach');
+        var input = $('.qty-input[data-masach="' + maSach + '"]');
+        var sl = parseInt(input.val()) + 1;
+        input.val(sl);
+        capNhatGioHang(maSach, sl);
+    });
+
+    // Nút giảm số lượng
+    $(document).on('click', '.btn-giam', function () {
+        var maSach = $(this).data('masach');
+        var input = $('.qty-input[data-masach="' + maSach + '"]');
+        var sl = parseInt(input.val()) - 1;
+        if (sl < 1) sl = 1;
+        input.val(sl);
+        capNhatGioHang(maSach, sl);
+    });
+
+    // Thay đổi trực tiếp ô input
+    $(document).on('change', '.qty-input', function () {
+        var maSach = $(this).data('masach');
+        var sl = parseInt($(this).val());
+        if (isNaN(sl) || sl < 1) { sl = 1; $(this).val(1); }
+        capNhatGioHang(maSach, sl);
+    });
+
+    // Nút xóa
+    $(document).on('click', '.btn-xoa', function () {
+        var maSach = $(this).data('masach');
+        if (!confirm('Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?')) return;
+        $.ajax({
+            url: xoaUrl,
+            type: 'POST',
+            data: { maSach: maSach, __RequestVerificationToken: $('[name=__RequestVerificationToken]').val() },
+            success: function (res) {
+                if (res.success) {
+                    $('#row-' + maSach).remove();
+                    $('#tong-tien, #tong-tien-final').text(res.tongTien + ' ₫');
+                    $('#cart-icon-count').text(res.soLuongGioHang);
+                    if ($('#cart-table tbody tr').length === 0) {
+                        location.reload();
+                    }
+                }
+            }
+        });
+    });
+</script>
+@Html.AntiForgeryToken()
+}

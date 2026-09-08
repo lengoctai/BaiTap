@@ -164,6 +164,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ChuDeController.cs" />
+    <Compile Include="Controllers\GioHangController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NhaXuatBanController.cs" />
     <Compile Include="Controllers\SachKHCBController.cs" />
@@ -179,6 +180,7 @@
       <DependentUpon>ModelThuVienSach.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ChuDeViewModel.cs" />
+    <Compile Include="Models\CartViewModel.cs" />
     <Compile Include="Models\DangKyViewModel.cs" />
     <Compile Include="Models\DangNhapViewModel.cs" />
     <Compile Include="Models\QuenMatKhauViewModel.cs" />
@@ -548,6 +550,9 @@
     <Content Include="Views\NhaXuatBan\Edit.cshtml" />
     <Content Include="Views\NhaXuatBan\Details.cshtml" />
     <Content Include="Views\NhaXuatBan\Delete.cshtml" />
+    <Content Include="Views\GioHang\Index.cshtml" />
+    <Content Include="Views\GioHang\ThanhToan.cshtml" />
+    <Content Include="Views\GioHang\DatHangThanhCong.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
